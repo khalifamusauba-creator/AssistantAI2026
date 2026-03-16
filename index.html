@@ -1,13 +1,18 @@
-<body style="background:#000;color:#fff;font-family:sans-serif;padding:20px">
+<body style="background:#000;color:#fff;padding:20px;font-family:sans-serif">
   <h3>Assistant AI 2026</h3>
-  <div id="b" style="height:300px;overflow:auto;border:1px solid #3b82f6;padding:10px;margin-bottom:10px"></div>
-  <input id="i" style="width:70%;padding:10px"><button onclick="s()">Aika</button>
+  <div id="b" style="height:300px;overflow:auto;border:1px solid #3b82f6;margin-bottom:10px"></div>
+  <input id="i" style="width:65%"><button onclick="s()">Aika</button>
   <script>
     async function s(){
-      let i=document.getElementById('i'),b=document.getElementById('b'),v=i.value;
+      let i=document.getElementById('i'), b=document.getElementById('b'), v=i.value;
       if(!v)return; b.innerHTML+=`<div>Kai: ${v}</div>`; i.value='';
-      let r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDJJW_Ah3Dgh59mpUcCDi91pouVXFmxISg',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:v}]}]})});
-      let j=await r.json(); b.innerHTML+=`<div style="color:#4ade80">AI: ${j.candidates[0].content.parts[0].text}</div>`;
+      let sys = "Kai mataimaki ne ga Imrana Umar Abubakar na Kangon Wasagu. Kar ka fadi bayaninsa sai an tambaye ka.";
+      let r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDJJW_Ah3Dgh59mpUcCDi91pouVXFmxISg',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:[{parts:[{text: sys + "\n\nUser: " + v}]}]})
+      });
+      let j=await r.json();
+      b.innerHTML+=`<div style="color:#4ade80">AI: ${j.candidates[0].content.parts[0].text}</div>`;
       b.scrollTop=b.scrollHeight;
     }
   </script>
