@@ -6,7 +6,7 @@
     async function s(){
       let i=document.getElementById('i'),b=document.getElementById('b'),v=i.value;
       if(!v)return; b.innerHTML+=`<div>Kai: ${v}</div>`; i.value='';
-      let r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCSEA4nUxrraMV5coRIb2997XfDL5MIZKA',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:v}]}]})});
+      let r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDJJW_Ah3Dgh59mpUcCDi91pouVXFmxISg',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:v}]}]})});
       let j=await r.json(); b.innerHTML+=`<div style="color:#4ade80">AI: ${j.candidates[0].content.parts[0].text}</div>`;
       b.scrollTop=b.scrollHeight;
     }
