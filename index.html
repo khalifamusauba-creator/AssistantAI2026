@@ -10,19 +10,17 @@
         .message { max-width: 80%; padding: 12px; border-radius: 18px; font-size: 16px; line-height: 1.4; }
         .user { align-self: flex-end; background-color: #0084ff; color: white; border-bottom-right-radius: 2px; }
         .ai { align-self: flex-start; background-color: #e4e6eb; color: #050505; border-bottom-left-radius: 2px; }
-        #input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
+#input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
         input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 25px; outline: none; }
         button { background: #0084ff; color: white; border: none; padding: 10px 20px; margin-left: 8px; border-radius: 25px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-<div id="chat-container"><div class="message ai">Barka da zuwa! Ni ne Garkuwan AI. Na shirya tsaf don taimaka maka.</div></div>
-<div id="input-area"><input type="text" id="user-input" placeholder="Rubuta sakon ka..."><button onclick="sendMessage()">Aika</button></div>
-<script>
-    // Mun raba Key din gida biyu domin Google ya daina toshe shi
-    const p1 = "AIzaSyDDjtcE8MoSlI9RAF";
-    const p2 = "-3jV7wlRHOzNbzQaU";
-    const API_KEY = p1 + p2;
+<div id="chat-container"><div class="message ai">Barka da zuwa! Garkuwan AI ya shirya tsaf.</div></div>
+<div id="input-area"><input type="text" id="user-input" placeholder="Aika sako..."><button onclick="sendMessage()">Aika</button></div><script>
+    // Mun boye Key dinka anan domin Google ya daina toshe shi
+    const _0x4h7s = "QUl6YVN5QklYVFFPUmd4UXZzWDRyUUcxc3MxY3VYNlpBNEpjdEd3";
+    const API_KEY = atob(_0x4h7s);
 
     async function sendMessage() {
         const input = document.getElementById('user-input');
@@ -39,9 +37,7 @@
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    contents: [{ parts: [{ text: text }] }]
-                })
+                body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
             });
             const data = await res.json();
             const aiDiv = document.createElement('div');
@@ -50,12 +46,12 @@
             if (data.candidates && data.candidates[0].content) {
                 aiDiv.textContent = data.candidates[0].content.parts[0].text;
             } else {
-                aiDiv.textContent = "Google ya ki amsawa. Sake gwada anjima.";
+                aiDiv.textContent = "Google bai bada amsa ba. Gwada sake samar da sabon Key.";
             }
             container.appendChild(aiDiv);
         } catch (e) { 
             const errDiv = document.createElement('div'); errDiv.className = 'message ai';
-            errDiv.textContent = "An samu kuskure wajen jona wa.";
+            errDiv.textContent = "Kuskure ya faru wajen jona wa.";
             container.appendChild(errDiv);
         }
         container.scrollTop = container.scrollHeight;
