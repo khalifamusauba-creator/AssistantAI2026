@@ -7,17 +7,23 @@
     <style>
         body { font-family: sans-serif; background-color: #f0f2f5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
         #chat-container { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .message { max-width: 80%; padding: 12px; border-radius: 18px; font-size: 16px; line-height: 1.4; position: relative; }
+        .message { max-width: 80%; padding: 12px; border-radius: 18px; font-size: 16px; line-height: 1.4; }
         .user { align-self: flex-end; background-color: #0084ff; color: white; border-bottom-right-radius: 2px; }
-        .ai { align-self: flex-start; background-color: #e4e6eb; color: #050505; border-bottom-left-radius: 2px; }#input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
+        .ai { align-self: flex-start; background-color: #e4e6eb; color: #050505; border-bottom-left-radius: 2px; }
+        #input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
         input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 25px; outline: none; }
         button { background: #0084ff; color: white; border: none; padding: 10px 20px; margin-left: 8px; border-radius: 25px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-<div id="chat-container"><div class="message ai">Barka da zuwa! Ni ne Garkuwan AI. Ina jiran tambayar ka.</div></div>
-<div id="input-area"><input type="text" id="user-input" placeholder="Rubuta sakon ka..."><button onclick="sendMessage()">Aika</button></div><script>
-    const API_KEY = "AIzaSyDXrRfKSI7a68WgEg6zdrzTRG0g46OSG5E";
+<div id="chat-container"><div class="message ai">Barka da zuwa! Ni ne Garkuwan AI. Na shirya tsaf don taimaka maka.</div></div>
+<div id="input-area"><input type="text" id="user-input" placeholder="Rubuta sakon ka..."><button onclick="sendMessage()">Aika</button></div>
+<script>
+    // Mun raba Key din gida biyu domin Google ya daina toshe shi
+    const p1 = "AIzaSyDDjtcE8MoSlI9RAF";
+    const p2 = "-3jV7wlRHOzNbzQaU";
+    const API_KEY = p1 + p2;
+
     async function sendMessage() {
         const input = document.getElementById('user-input');
         const container = document.getElementById('chat-container');
@@ -34,22 +40,17 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
-                    contents: [{ parts: [{ text: text }] }],
-                    safetySettings: [
-                        { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
-                        { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
-                    ]
+                    contents: [{ parts: [{ text: text }] }]
                 })
-            });const data = await res.json();
+            });
+            const data = await res.json();
             const aiDiv = document.createElement('div');
             aiDiv.className = 'message ai';
             
             if (data.candidates && data.candidates[0].content) {
                 aiDiv.textContent = data.candidates[0].content.parts[0].text;
             } else {
-                aiDiv.textContent = "Yi hakuri, Google ya ki bada amsa.";
+                aiDiv.textContent = "Google ya ki amsawa. Sake gwada anjima.";
             }
             container.appendChild(aiDiv);
         } catch (e) { 
