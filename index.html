@@ -7,18 +7,17 @@
     <style>
         body { font-family: sans-serif; background-color: #f0f2f5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
         #chat-container { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .message { max-width: 80%; padding: 12px; border-radius: 18px; font-size: 16px; line-height: 1.4; }
+        .message { max-width: 80%; padding: 12px; border-radius: 18px; font-size: 16px; line-height: 1.4; position: relative; }
         .user { align-self: flex-end; background-color: #0084ff; color: white; border-bottom-right-radius: 2px; }
-        .ai { align-self: flex-start; background-color: #e4e6eb; color: #050505; border-bottom-left-radius: 2px; }
-#input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
+        .ai { align-self: flex-start; background-color: #e4e6eb; color: #050505; border-bottom-left-radius: 2px; }#input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
         input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 25px; outline: none; }
-        button { background: #0084ff; color: white; border: none; padding: 10px 20px; margin-left: 8px; border-radius: 25px; font-weight: bold; }
+        button { background: #0084ff; color: white; border: none; padding: 10px 20px; margin-left: 8px; border-radius: 25px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-<div id="chat-container"><div class="message ai">Barka da zuwa! Ni ne Garkuwan AI. Ka rubuta tambayar ka.</div></div>
+<div id="chat-container"><div class="message ai">Barka da zuwa! Ni ne Garkuwan AI. Ina jiran tambayar ka.</div></div>
 <div id="input-area"><input type="text" id="user-input" placeholder="Rubuta sakon ka..."><button onclick="sendMessage()">Aika</button></div><script>
-    const API_KEY = "AIzaSyD0QS11X8dH9-QFSV_0pq_mmF6oPSzaFFs";
+    const API_KEY = "AIzaSyDXrRfKSI7a68WgEg6zdrzTRG0g46OSG5E";
     async function sendMessage() {
         const input = document.getElementById('user-input');
         const container = document.getElementById('chat-container');
@@ -43,15 +42,19 @@
                         { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
                     ]
                 })
-            });
-            const data = await res.json();
+            });const data = await res.json();
             const aiDiv = document.createElement('div');
             aiDiv.className = 'message ai';
-            aiDiv.textContent = data.candidates[0].content.parts[0].text;
+            
+            if (data.candidates && data.candidates[0].content) {
+                aiDiv.textContent = data.candidates[0].content.parts[0].text;
+            } else {
+                aiDiv.textContent = "Yi hakuri, Google ya ki bada amsa.";
+            }
             container.appendChild(aiDiv);
         } catch (e) { 
             const errDiv = document.createElement('div'); errDiv.className = 'message ai';
-            errDiv.textContent = "Matsala ta samu. Tabbatar API Key dinka da Intanet suna aiki.";
+            errDiv.textContent = "An samu kuskure wajen jona wa.";
             container.appendChild(errDiv);
         }
         container.scrollTop = container.scrollHeight;
