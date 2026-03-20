@@ -16,12 +16,12 @@
     </style>
 </head>
 <body>
-<div id="chat-window"><div class="bubble ai">Sannu Imrana! Garkuwan AI ya shirya da sabon Key.</div></div>
+<div id="chat-window"><div class="bubble ai">Sannu Imrana! Garkuwan AI ya shirya tsaf.</div></div>
 <div class="input-area">
     <input type="text" id="userInput" placeholder="Rubuta sako...">
     <button onclick="ask()">Aika</button>
 </div><script>
-    // Mun raba sabon Key dinka gida hudu don tsaro
+    // Mun boye sabon Key dinka (AIzaSyCZMNcd7iHcGToQYu6ZXnuANHuysBm4v9U)
     const p = ["QUl6YVN5Q1pNTmNkN2lIY0dUb1FZdTZ", "aFhudUFOSHV5c0JtNHY5VQ=="];
     const s = () => atob(p.join(""));
 
@@ -41,12 +41,21 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ parts: [{ text: t }] }] })
             });
-            const d = await response = await r.json();
+            const d = await r.json();
             const aD = document.createElement('div');
             aD.className = 'bubble ai';
-            aD.textContent = d.candidates ? d.candidates[0].content.parts[0].text : "Akwai matsala, ko an toshe Key din?";
+            if (d.candidates && d.candidates[0].content.parts[0].text) {
+                aD.textContent = d.candidates[0].content.parts[0].text;
+            } else {
+                aD.textContent = "Google bai bada amsa ba. Ko an toshe Key din?";
+            }
             b.appendChild(aD);
-        } catch (e) { console.error(e); }
+        } catch (e) { 
+            const eD = document.createElement('div');
+            eD.className = 'bubble ai';
+            eD.textContent = "An samu matsalar network.";
+            b.appendChild(eD);
+        }
         b.scrollTop = b.scrollHeight;
     }
 </script>
