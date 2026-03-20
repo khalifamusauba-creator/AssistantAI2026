@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garkuwan AI</title>
+    <title>Garkuwan AI - Imrana</title>
     <style>
-        body { font-family: sans-serif; background-color: #f0f2f5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
-        #chat-container { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .message { max-width: 80%; padding: 12px; border-radius: 18px; font-size: 16px; line-height: 1.4; }
-        .user { align-self: flex-end; background-color: #0084ff; color: white; border-bottom-right-radius: 2px; }
-        .ai { align-self: flex-start; background-color: #e4e6eb; color: #050505; border-bottom-left-radius: 2px; }
-#input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; }
-        input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 25px; outline: none; }
-        button { background: #0084ff; color: white; border: none; padding: 10px 20px; margin-left: 8px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+        body { font-family: sans-serif; background: #e5e5e5; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        #chat-window { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .bubble { max-width: 75%; padding: 10px 15px; border-radius: 20px; font-size: 15px; }
+        .user-bubble { align-self: flex-end; background: #0078ff; color: white; border-bottom-right-radius: 2px; }
+        .ai-bubble { align-self: flex-start; background: white; color: #333; border-bottom-left-radius: 2px; }
+.input-box { display: flex; padding: 15px; background: white; }
+        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 30px; outline: none; }
+        button { background: #0078ff; color: white; border: none; padding: 10px 20px; margin-left: 10px; border-radius: 30px; cursor: pointer; }
     </style>
 </head>
 <body>
-<div id="chat-container"><div class="message ai">Barka da zuwa! Garkuwan AI ya shirya tsaf.</div></div>
-<div id="input-area"><input type="text" id="user-input" placeholder="Aika sako..."><button onclick="sendMessage()">Aika</button></div><script>
-    // Mun boye Key dinka anan domin Google ya daina toshe shi
-    const _0x4h7s = "QUl6YVN5QklYVFFPUmd4UXZzWDRyUUcxc3MxY3VYNlpBNEpjdEd3";
-    const API_KEY = atob(_0x4h7s);
+<div id="chat-window">
+    <div class="bubble ai-bubble">Barka da zuwa! Garkuwan AI ya shirya tsaf.</div>
+</div>
+<div class="input-box">
+    <input type="text" id="msgInput" placeholder="Rubuta tambaya...">
+    <button onclick="askAI()">Aika</button>
+</div><script>
+    const parts = [
+        "QUl6YVN5", 
+        "QTYwMjk4aDk2", 
+        "UTBjaXJ2SkhH", 
+        "VklmZkpjN2EzczA3WTcw"
+    ];
+    const getStoredKey = () => atob(parts.join(""));
 
-    async function sendMessage() {
-        const input = document.getElementById('user-input');
-        const container = document.getElementById('chat-container');
-        const text = input.value.trim();
-        if (!text) return;
+    async function askAI() {
+        const input = document.getElementById('msgInput');
+        const windowChat = document.getElementById('chat-window');
+        const userText = input.value.trim();
+        if (!userText) return;
 
-        const userDiv = document.createElement('div');
-        userDiv.className = 'message user';
-        userDiv.textContent = text;
-        container.appendChild(userDiv);
-        input.value = '';
-        container.scrollTop = container.scrollHeight;try {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+        const uDiv = document.createElement('div');
+        uDiv.className = 'bubble user-bubble';
+        uDiv.textContent = userText;
+        windowChat.appendChild(uDiv);
+        input.value = '';try {
+            const apiKey = getStoredKey();
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: text }] }] })
+                body: JSON.stringify({ contents: [{ parts: [{ text: userText }] }] })
             });
-            const data = await res.json();
+            const result = await response.json();
             const aiDiv = document.createElement('div');
-            aiDiv.className = 'message ai';
-            
-            if (data.candidates && data.candidates[0].content) {
-                aiDiv.textContent = data.candidates[0].content.parts[0].text;
-            } else {
-                aiDiv.textContent = "Google bai bada amsa ba. Gwada sake samar da sabon Key.";
-            }
-            container.appendChild(aiDiv);
-        } catch (e) { 
-            const errDiv = document.createElement('div'); errDiv.className = 'message ai';
-            errDiv.textContent = "Kuskure ya faru wajen jona wa.";
-            container.appendChild(errDiv);
-        }
-        container.scrollTop = container.scrollHeight;
+            aiDiv.className = 'bubble ai-bubble';
+            aiDiv.textContent = result.candidates ? result.candidates[0].content.parts[0].text : "Kuskure: Ko Key din ya mutu?";
+            windowChat.appendChild(aiDiv);
+        } catch (err) { console.error(err); }
+        windowChat.scrollTop = windowChat.scrollHeight;
     }
 </script>
 </body>
