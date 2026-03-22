@@ -34,13 +34,13 @@
         <div class="menu-btn" onclick="toggleSidebar()">☰</div>
         <div style="font-weight: bold; color: white;">Garkuwan AI</div>
     </div>
-    <div id="chat"><div class="msg a">Sannu! Ni ne Garkuwan AI na Imrana. A shirye nake in duba hotunanka in amsa tambayoyinka.</div></div>
+    <div id="chat"><div class="msg a">Sannu! Ni ne Garkuwan AI na Imrana. A shirye nake in duba abunda ka turo in amsa tambayoyinka.</div></div>
     <div class="input-container">
         <div class="input-box">
             <label class="plus-btn" for="f">+</label>
             <input type="file" id="f" style="display:none" onchange="previewFile()">
             <select class="model-select"><option>Fast</option></select>
-            <input type="text" id="t" placeholder="Rubuta sakon ka...">
+            <input type="text" id="t" placeholder="Resarch...">
             <button class="send-btn" onclick="ask()">➤</button>
         </div>
     </div>
@@ -52,7 +52,7 @@
         document.getElementById('sidebar').classList.toggle('active'); 
     }
     
-    // Wannan yana kula da hoto idan ka danna alamar +
+    // Wannan yana kula da hoto idan ka danna alamar + Kuma Ya aje hoton idan ka gama rubutusai kayi past tare
     function previewFile() {
         const file = document.getElementById('f').files[0];
         const reader = new FileReader();
@@ -79,8 +79,8 @@
         b.scrollTop = b.scrollHeight;
         
         try {
-            // Kiran Vercel Proxy dinka
-            const res = await fetch('https://umarkng.netlify.app/api/chat', {
+            // Kiran netlify  dinka
+            const res = await fetch('https://umarkng.netlify.app/api/chat', .{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: txt, image: b64, mimeType: mime })
@@ -93,7 +93,7 @@
             // Share hoton bayan ya riga ya tafi domin tura wani sabon
             b64 = ""; mime = ""; 
         } catch (e) { 
-            b.innerHTML += `<div class="msg a" style="color:#ff6b6b">Matsalar Network! Tabbatar ka yi Redeploy a Vercel.</div>`; 
+            b.innerHTML += `<div class="msg a" style="color:#ff6b6b">Matsalar Network! Tabbatar ka yi Redeploy a netlify.</div>`; 
         }
         b.scrollTop = b.scrollHeight;
     }
